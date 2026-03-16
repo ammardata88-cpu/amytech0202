@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { 
   Mail, 
@@ -9,9 +10,7 @@ import {
   CheckCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
+
 import { useToast } from "@/hooks/use-toast";
 import Layout from "@/components/layout/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -19,15 +18,6 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const Contact = () => {
   const { toast } = useToast();
   const { t } = useLanguage();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    company: "",
-    service: "",
-    message: ""
-  });
 
   const contactInfo = [
     {
@@ -50,51 +40,12 @@ const Contact = () => {
     }
   ];
 
-  const services = [
-    { value: "ERP Implementation", label: t("contactPage.services.erp") },
-    { value: "CRM Solutions", label: t("contactPage.services.crm") },
-    { value: "AI Automation", label: t("contactPage.services.ai") },
-    { value: "Digital Transformation", label: t("contactPage.services.digital") },
-    { value: "Corporate Governance", label: t("contactPage.services.governance") },
-    { value: "Other", label: t("contactPage.services.other") }
-  ];
-
   const expectations = [
     t("contactPage.expect.item1"),
     t("contactPage.expect.item2"),
     t("contactPage.expect.item3"),
     t("contactPage.expect.item4")
   ];
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    toast({
-      title: t("contactPage.toast.title"),
-      description: t("contactPage.toast.description"),
-    });
-
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      company: "",
-      service: "",
-      message: ""
-    });
-    setIsSubmitting(false);
-  };
 
   return (
     <Layout>
@@ -128,117 +79,42 @@ const Contact = () => {
       <section className="py-24 bg-background">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16">
-            {/* Contact Form */}
+            {/* WhatsApp CTA */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
+              className="space-y-8"
             >
-              <h2 className="text-3xl font-bold text-foreground mb-8">{t("contactPage.form.title")}</h2>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">{t("contactPage.form.name")} {t("contactPage.form.required")}</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      placeholder={t("contactPage.form.namePlaceholder")}
-                      required
-                      className="h-12"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">{t("contactPage.form.email")} {t("contactPage.form.required")}</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder={t("contactPage.form.emailPlaceholder")}
-                      required
-                      className="h-12"
-                    />
-                  </div>
-                </div>
+              <div className="text-center mb-8">
+                <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">{t("whatsapp.title")}</h2>
+                <p className="text-xl text-muted-foreground max-w-md mx-auto">
+                  {t("whatsapp.subtitle")}
+                </p>
 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">{t("contactPage.form.phone")}</Label>
-                    <Input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      placeholder={t("contactPage.form.phonePlaceholder")}
-                      className="h-12"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="company">{t("contactPage.form.company")}</Label>
-                    <Input
-                      id="company"
-                      name="company"
-                      value={formData.company}
-                      onChange={handleChange}
-                      placeholder={t("contactPage.form.companyPlaceholder")}
-                      className="h-12"
-                    />
-                  </div>
-                </div>
+              </div>
+              <a
+                href="https://wa.me/966583140470?text=Hi%20!%20I%27m%20interested%20in%20your%20AI%2FERP%20services.%20Can%20we%20schedule%20a%20call%3F"
 
-                <div className="space-y-2">
-                  <Label htmlFor="service">{t("contactPage.form.service")} {t("contactPage.form.required")}</Label>
-                  <select
-                    id="service"
-                    name="service"
-                    value={formData.service}
-                    onChange={handleChange}
-                    required
-                    className="w-full h-12 px-4 rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-                  >
-                    <option value="">{t("contactPage.form.servicePlaceholder")}</option>
-                    {services.map((service) => (
-                      <option key={service.value} value={service.value}>
-                        {service.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="message">{t("contactPage.form.message")} {t("contactPage.form.required")}</Label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    placeholder={t("contactPage.form.messagePlaceholder")}
-                    required
-                    className="min-h-[150px] resize-none"
-                  />
-                </div>
-
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full max-w-sm mx-auto"
+              >
                 <Button
-                  type="submit"
-                  variant="accent"
+                  variant="default"
                   size="xl"
-                  className="w-full"
-                  disabled={isSubmitting}
+                  className="w-full h-16 text-xl font-semibold shadow-2xl bg-[#25D366] hover:bg-[#25D366]/90 text-white border-none"
                 >
-                  {isSubmitting ? (
-                    t("contactPage.form.submitting")
-                  ) : (
-                    <>
-                      {t("contactPage.form.submit")}
-                      <Send className="w-5 h-5" />
-                    </>
-                  )}
+                  <MessageCircle className="w-8 h-8 mr-3" />
+                  {t("whatsapp.button")}
+                  <MessageCircle className="w-8 h-8 ml-3" />
                 </Button>
-              </form>
+
+              </a>
+              <div className="pt-8 border-t border-border">
+              </div>
+
+
             </motion.div>
 
             {/* Contact Info */}
